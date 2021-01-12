@@ -4,12 +4,9 @@ import ZipSearch from './components/ZipSearch'
 
 
 class App extends React.Component {
-  
   render(){
     return (
-      <div className="App">
         <ZipSearch />
-      </div>
     );
   }
 }
