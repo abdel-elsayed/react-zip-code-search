@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import "../App.css"
 
 class ZipSearch extends Component {
     constructor() {
@@ -7,7 +8,6 @@ class ZipSearch extends Component {
             zipCode: "10312",
             zipData: [],
             error: false,
-            isLoading: true
         }
     }
 
@@ -16,7 +16,7 @@ class ZipSearch extends Component {
     }
 
     onChange = (event) => {
-        this.setState({
+        this.setState({ isLoading:true, 
             [event.target.name]: event.target.value
         })
         this.fetchNewData(event.target.value)
@@ -35,6 +35,7 @@ class ZipSearch extends Component {
         }).then(data => {
             console.log(data)
             this.setState({
+                isLoading: false,
                 zipData: data,
                 error: false
             })
@@ -48,18 +49,25 @@ class ZipSearch extends Component {
     render(){
         console.log("state data: ", this.state.zipData)
         return(
-            <>
-            <header>Zip Code Search</header>
-            <form>
-                <input type="text" name="zipCode" placeholder="Zip Code" onChange={this.onChange}></input>
-            </form>
-
-            {this.state.error === true ? <div>ERROR</div> : 
-            this.state.zipData.map( (item,index) => (
-                <div key={index} >{item.City}</div>
-            ))}
-        
-            </>
+            <main>
+                <header id ="main-header">Zip Code Search</header>
+                <form>
+                    <input type="text" name="zipCode" placeholder="Zip Code" onChange={this.onChange}></input>
+                </form>
+                {this.state.error===true ? <div className="error">No Results</div> : this.state.zipData.map( (item,index) => (
+                    <div key={index} className = "dataContainer">
+                        <header className="headerContainer">{item.LocationText}</header>
+                        <div className ="innerDataContainer">
+                        <p>
+                            <li>State: {item.State}</li>
+                            <li>Location: ({item.Lat}, {item.Long})</li>
+                            <li>Population (estimated): {item.EstimatedPopulation}</li>
+                            <li>Total Wages: {item.TotalWages}</li>
+                        </p>
+                        </div>
+                    </div>
+                ))}
+            </main>
         )
     }
 }
